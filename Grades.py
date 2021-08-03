@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
 original_df = pd.read_csv('test_scores.csv')
 
@@ -44,3 +47,34 @@ df_school_setting_type_method_classroom_gender_lunch = df_school_setting_type_me
 
 # df
 df = df_school_setting_type_method_classroom_gender_lunch
+
+# Getting all the X Headers
+X_headers = []
+for i in df.columns[:-1]:
+    X_headers += [i]
+gender = X_headers[:2]
+classroom = X_headers[2:99]
+school = X_headers[99:122]
+
+
+X_headers.remove('teaching_method')
+
+X = df.loc[:, X_headers]
+y = df.loc[:, ['posttest']]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=23)
+
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+y_pred = pd.DataFrame(regressor.predict(X_test), columns=['posttest'])
+
+RMSE = np.sqrt(metrics.mean_squared_error(y_test, y_pred))
+print(RMSE)
+# w/ all = 2.88474
+# w/o Gender =  2.89301
+# w/o Classroom = 3.06543
+# w/o School = 2.8847
+# w/o school_setting = 2.88471
+# w/o n_student = 2.88475
+# w/o lunch = 2.9272
+# w/o teaching method = 2.88476
