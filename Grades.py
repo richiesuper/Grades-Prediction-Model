@@ -52,9 +52,9 @@ df = df_school_setting_type_method_classroom_gender_lunch
 X_headers = []
 for i in df.columns[:-1]:
     X_headers += [i]
-gender = X_headers[:2]
-classroom = X_headers[2:99]
-school = X_headers[99:122]
+# gender = X_headers[:2]
+# classroom = X_headers[2:99]
+# school = X_headers[99:122]
 
 
 X_headers.remove('teaching_method')
